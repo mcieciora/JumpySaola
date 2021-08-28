@@ -1,0 +1,13 @@
+JumpySaola - release 1.0
+
+- Added Flask app initialization and database creation
+- Added User and Transaction models
+- Added main page views
+- Added user authorization and transactions functionality
+- Added Docker image build file
+- Added Jenkinsfile with code linting, testing, image building, deploying and verification
+- Added empty automated tests suites and initialized test structure
+- Added base HTML file and home/login/signup HTMLs
+- Added index.js file with transaction deletion handle
+
+Associated docker tag: mcieciora/jumpy_saola:1.0.46

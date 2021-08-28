@@ -1,10 +1,13 @@
 pipeline {
     parameters {
         booleanParam(name: 'RELOAD_CONFIGURATION', defaultValue: false, description: '')
-        string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
-        string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
-        string(name: 'DOCKER_REGISTRY', defaultValue: "mcieciora/jumpy_saola", description: 'Provide Docker registry name')
         string(name: 'BUILD_VERSION', defaultValue: "1.0", description: 'Provide to-build app version')
+        string(name: 'BRANCH', defaultValue: "master", description: 'Provide branch value')
+        booleanParam(name: 'DOCKER_DEPLOY', defaultValue: true, description: 'Push built image to docker registry if true, else put it in development registry')
+        string(name: 'DOCKER_REGISTRY', defaultValue: "mcieciora/jumpy_saola", description: 'Provide Docker registry name')
+        string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "", description: 'Provide dev-Docker registry name')
+        string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
+        string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
     }
    environment {
         registry = "$DOCKER_REGISTRY"
@@ -31,7 +34,7 @@ pipeline {
 
         stage('Clone GIT repository') {
             steps {
-                git "$GIT_REPOSITORY"
+                git branch: '$BRANCH', credentialsId: 'dockerhub_id', url: "$GIT_REPOSITORY"
             }
         }
 

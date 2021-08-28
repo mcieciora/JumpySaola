@@ -12,36 +12,36 @@ def client():
             yield client
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__no_such_username(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__wrong_password(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__empty_login(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__empty_password(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__empty_credentials(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_login__correct_credentials(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_auth_logout__logout(client):
     pass

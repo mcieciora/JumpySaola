@@ -12,16 +12,16 @@ def client():
             yield client
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_transaction_delete__delete_transaction(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_transaction_delete__non_existing_transaction(client):
     pass
 
 
-@pytest.skip('To be implemented')
+@pytest.mark.skip('To be implemented')
 def test_transaction_delete__other_user_transaction(client):
     pass

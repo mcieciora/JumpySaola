@@ -12,5 +12,10 @@
       <a href="/sign-up">Sign Up</a>
     {% endif %}
     <div class="container">{% block content %} {% endblock %}</div>
+
+    <script
+      type="text/javascript"
+      src="{{ url_for('static', filename='index.js') }}"
+    ></script>
   </body>
 </html>

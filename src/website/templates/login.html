@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %}Login{% endblock %} {% block content %}
 <form method="POST">
-  <h3 align="center">Login</h3>
-    <label for="username">Username</label>
+  <div class="col">
+  <h2 align="center">Login</h2>
     <input
       type="text"
       class="btn"
@@ -9,7 +9,6 @@
       name="username"
       placeholder="Enter username"
     />
-    <label for="pin_code">Pin code</label>
     <input
       type="password"
       class="btn"
@@ -18,5 +17,6 @@
       placeholder="Enter pin code"
     />
     <input class="btn" type="submit" value="Login">
+    </div>
 </form>
 {% endblock %}

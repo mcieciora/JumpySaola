@@ -1,0 +1,238 @@
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #e6e6e6;
+}
+
+h1 {
+  color: #999999;
+  text-align: center;
+  margin-top: 2.5%;
+}
+
+h2 {
+  color: #999999;
+  text-align: center;
+  margin-top: 5%;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.topnav a {
+  float: left;
+  color: #e6e6e6;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav-right {
+  float: right;
+}
+
+.topnav a:hover {
+  background-color: #e6e6e6;
+  color: black;
+}
+
+.failure {
+  padding: 20px;
+  background-color: #ca3535;
+  color: white;
+}
+
+.success {
+   padding: 20px;
+   background-color: #40bf40;
+   color: white;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: white;
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+.col {
+  margin: auto;
+  max-width: 25%;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+input:hover,
+.btn:hover {
+  opacity: 1;
+}
+
+input[type=submit] {
+  background-color: #4eb151;
+  color: white;
+  cursor: pointer;
+}
+
+input[type=text], input[type=password] {
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+input.larger {
+  width: 25px;
+  height: 25px;
+}
+
+select,
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+select:hover,
+.btn:hover {
+  opacity: 1;
+}
+
+option {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+  margin: 5px 0;
+  opacity: 0.85;
+  display: inline-block;
+  font-size: 17px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.delete {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: red;
+}
+
+.edit {
+    background:none;
+    border:none;
+    margin:0;
+    padding:0;
+    cursor: pointer;
+    color: blue;
+}
+
+.url_button {
+  width: 30%;
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  display: inline-block;
+}
+
+.url_button:hover {
+  background-color: #555555;
+  color: white;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+}
+
+.checkbox {
+    text-align: center;
+    font-size: 20px;
+}
+
+.chart {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 2.5%;
+  width: 75%;
+  height: 75%;
+}
+
+#categories_table {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 7.5%;
+}
+
+#categories_table td, #categories_table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#categories_table tr:nth-child(even){background-color: #f2f2f2;}
+
+#categories_table tr:hover {background-color: #ddd;}
+
+#categories_table th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #4eb151;
+  color: white;
+
+#categories_table .tr_summary {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #83c985;
+  color: white;
+}

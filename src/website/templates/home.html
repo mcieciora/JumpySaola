@@ -1,5 +1,4 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-
   <form method="POST">
       <h1>TEST PERIOD</h1>
       <div class="col">
@@ -7,28 +6,32 @@
       <input class="btn" type="text" name="transaction_desc" placeholder="Description" required>
           <div class="checkbox">
               <div class="tooltip">
-                <input id="transaction_outcome" type="checkbox" class="larger" name="transaction_outcome" value="transaction_outcome" checked>
-                <label for="transaction_outcome">Outcome</label>
-                <span class="tooltiptext">Uncheck this field if transaction is an income</span>
-          </div>
+                  <input id="transaction_outcome" type="checkbox" class="larger" name="transaction_outcome" value="transaction_outcome" checked>
+                  <label for="transaction_outcome">Outcome</label>
+                  <span class="tooltiptext">Uncheck this field if transaction is an income</span>
+              </div>
               <input class="btn" type="submit" value="Add transaction">
-      </div>
+          </div>
       </div>
   </form>
-
-    <table id="categories_table">
-        <tr>
-  <th>Value</th>
-  <th>Description</th>
-  <th>Category</th>
-            <th>Options</th>
-</tr>
+  <table id="categories_table">
+      <tr>
+          <th>Value</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Options</th>
+      </tr>
       {% for transaction in user.transactions %}
-        <tr>
-            <td>{{ transaction.value }}</td>
-            <td>{{ transaction.description }}</td>
-            <td><button class="astext" onClick="deleteTransaction({{ transaction.id }})">Delete</button></td>
-        </tr>
+      <tr>
+          <td>{{ transaction.value }}</td>
+          <td>{{ transaction.description }}</td>
+          <td>!Not implemented!</td>
+          <td>
+              <button id="edit">Clone</button>
+              <button class="astext">Edit</button>
+              <button id="delete" onClick="deleteTransaction({{ transaction.id }})">Delete</button>
+          </td>
+      </tr>
       {% endfor %}
-    </table>
+  </table>
 {% endblock %}

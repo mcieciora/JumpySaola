@@ -1,15 +1,9 @@
 import pytest
-from src.website import create_app
 
 
-@pytest.fixture
-def client():
-    app = create_app()
-    app.config['TESTING'] = True
-
-    with app.app_context():
-        with app.test_client() as client:
-            yield client
+@pytest.mark.skip('To be implemented')
+def test_transaction_add__non_logged_user_transaction_add(client):
+    pass
 
 
 @pytest.mark.skip('To be implemented')
@@ -28,7 +22,7 @@ def test_transaction_add__empty_transaction_value(client):
 
 
 @pytest.mark.skip('To be implemented')
-def test_transaction_add__positive_transaction_value(client):
+def test_transaction_add__negative_transaction_value(client):
     pass
 
 
@@ -47,6 +41,13 @@ def test_transaction_add__add_outcome(client):
     pass
 
 
-@pytest.mark.skip('To be implemented')
-def test_transaction_add__add_income(client):
-    pass
+def test_transaction_add__add_income(client_logged_in_user):
+    response = client_logged_in_user.post('/', data=dict(transaction_value='25',
+                                                         transaction_desc='shopping', transaction_outcome='20'),
+                                          follow_redirects=True)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Transaction added!' in response.data.decode(), \
+        f'Application shall add transaction that was passed with proper data\n{response.data}'
+    assert '<td>-25</td>' in response.data.decode(), 'Table field is wrong or missing'
+    assert '<td>shopping</td>' in response.data.decode(), 'Table field is wrong or missing'
+    assert '<td>!Not implemented!</td>' in response.data.decode(), 'Table field is wrong or missing'

@@ -2,7 +2,6 @@ from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
 from .models import Transaction
 from . import db
-from json import loads
 
 views = Blueprint('views', __name__)
 
@@ -36,16 +35,16 @@ def home():
     return render_template("home.html", user=current_user)
 
 
-@views.route('/delete-transaction', methods=['POST'])
-def delete_transaction():
-    try:
-        transaction = loads(request.data)
-        transaction_id = transaction['transactionId']
-        transaction = Transaction.query.get(transaction_id)
-        if transaction and transaction.user_id == current_user.id:
-            db.session.delete(transaction)
-            db.session.commit()
-
-        return jsonify({})
-    except:
-        db.session.rollback()
+@views.route('/delete_transaction/<int:transaction_id>', methods=['DELETE'])
+@login_required
+def delete_transaction(transaction_id):
+    if request.method == 'DELETE':
+        try:
+            transaction = Transaction.query.get(transaction_id)
+            if transaction and transaction.user_id == current_user.id:
+                db.session.delete(transaction)
+                db.session.commit()
+                flash('Transaction was deleted successfully!', category='success')
+        except:
+            db.session.rollback()
+        return render_template("home.html", user=current_user)

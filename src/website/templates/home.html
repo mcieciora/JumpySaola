@@ -4,6 +4,12 @@
       <div class="col">
       <input class="btn" type="text" name="transaction_value" placeholder="Transaction value" required>
       <input class="btn" type="text" name="transaction_desc" placeholder="Description" required>
+          <select name="transaction_category" id="transaction_category">
+              <option value="0">Categories</option>
+              {% for category in user.categories %}
+              <option>{{ category.name }}</option>
+              {% endfor %}
+          </select>
           <div class="checkbox">
               <div class="tooltip">
                   <input id="transaction_outcome" type="checkbox" class="larger" name="transaction_outcome" value="transaction_outcome" checked>
@@ -25,7 +31,7 @@
       <tr>
           <td>{{ transaction.value }}</td>
           <td>{{ transaction.description }}</td>
-          <td>!Not implemented!</td>
+          <td>{{ transaction.category }}</td>
           <td>
               <button id="edit">Clone</button>
               <button class="astext">Edit</button>

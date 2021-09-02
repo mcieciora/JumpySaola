@@ -39,3 +39,26 @@ def client_with_transactions(client_logged_in_user):
                                           'transaction_outcome': 'transaction_outcome'})
 
     yield client_logged_in_user
+
+
+@pytest.fixture
+def client_with_categories(client_logged_in_user):
+    client_logged_in_user.post('/settings', data=dict(category_name='category', category_limit=100),
+                               follow_redirects=True)
+
+    yield client_logged_in_user
+
+
+@pytest.fixture
+def client_with_period(client_with_categories):
+    client_with_categories.post('/settings', data=dict(period_name='new_period'), follow_redirects=True)
+
+    yield client_with_categories
+
+
+@pytest.fixture
+def client_with_period_and_transactions(client_with_period):
+    client_with_period.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
+                                       'transaction_outcome': 'transaction_outcome'})
+
+    yield client_with_period

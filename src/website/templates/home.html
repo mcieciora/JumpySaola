@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-  <form method="POST">
-      <h1>TEST PERIOD</h1>
+{% if user.active_period|length > 0 %}
+<form method="POST">
+      <h1>{{ user.active_period[0].name }}</h1>
       <div class="col">
       <input class="btn" type="text" name="transaction_value" placeholder="Transaction value" required>
       <input class="btn" type="text" name="transaction_desc" placeholder="Description" required>
@@ -38,9 +39,11 @@
               <form method="post" action="{{ url_for('views.delete_transaction', transaction_id=transaction.id) }}">
                 <input class="astext" type="submit" name="delete" value="Delete">
               </form>
-
           </td>
       </tr>
       {% endfor %}
   </table>
+{% else %}
+  <h1 align="center">No active period! Go to settings and start one!</h1>
+{% endif %}
 {% endblock %}

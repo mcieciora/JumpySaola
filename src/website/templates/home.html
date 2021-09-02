@@ -29,7 +29,10 @@
           <td>
               <button id="edit">Clone</button>
               <button class="astext">Edit</button>
-              <button id="delete" onClick="deleteTransaction({{ transaction.id }})">Delete</button>
+              <form method="post" action="{{ url_for('views.delete_transaction', transaction_id=transaction.id) }}">
+                <input class="astext" type="submit" name="delete" value="Delete">
+              </form>
+
           </td>
       </tr>
       {% endfor %}

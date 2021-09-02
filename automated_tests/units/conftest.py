@@ -27,7 +27,15 @@ def client_users_setup(client):
 
 @pytest.fixture
 def client_logged_in_user(client):
-    response = client.post('/signup', data={'username': 'user1', 'pin_code_1': '1234', 'pin_code_2': '1234'})
-    response = client.post('/login', data={'username': 'user1', 'pin_code': '1234'})
+    client.post('/signup', data={'username': 'user1', 'pin_code_1': '1234', 'pin_code_2': '1234'})
+    client.post('/login', data={'username': 'user1', 'pin_code': '1234'})
 
     yield client
+
+
+@pytest.fixture
+def client_with_transactions(client_logged_in_user):
+    client_logged_in_user.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
+                                          'transaction_outcome': 'transaction_outcome'})
+
+    yield client_logged_in_user

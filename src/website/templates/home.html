@@ -1,9 +1,16 @@
 {% extends "base.html" %} {% block title %}Home{% endblock %} {% block content %}
-  <form method="POST">
-      <h1>TEST PERIOD</h1>
+{% if user.active_period|length > 0 %}
+<form method="POST">
+      <h1>{{ user.active_period[0].name }}</h1>
       <div class="col">
       <input class="btn" type="text" name="transaction_value" placeholder="Transaction value" required>
       <input class="btn" type="text" name="transaction_desc" placeholder="Description" required>
+          <select name="transaction_category" id="transaction_category">
+              <option value="0">Categories</option>
+              {% for category in user.categories %}
+              <option>{{ category.name }}</option>
+              {% endfor %}
+          </select>
           <div class="checkbox">
               <div class="tooltip">
                   <input id="transaction_outcome" type="checkbox" class="larger" name="transaction_outcome" value="transaction_outcome" checked>
@@ -25,16 +32,19 @@
       <tr>
           <td>{{ transaction.value }}</td>
           <td>{{ transaction.description }}</td>
-          <td>!Not implemented!</td>
+          <td>{{ transaction.category }}</td>
           <td>
-              <button id="edit">Clone</button>
-              <button class="astext">Edit</button>
-              <form method="post" action="{{ url_for('views.delete_transaction', transaction_id=transaction.id) }}">
-                <input class="astext" type="submit" name="delete" value="Delete">
+              <form action="{{ url_for('views.edit_transaction', transaction_id=transaction.id) }}" method="post">
+                <button type="submit" name="edit" class="aslink">Edit</button>
               </form>
-
+              <form action="{{ url_for('views.delete_transaction', transaction_id=transaction.id) }}" method="post">
+                <button type="submit" name="delete" class="aslink redlink">Delete</button>
+              </form>
           </td>
       </tr>
       {% endfor %}
   </table>
+{% else %}
+  <h1 align="center">No active period! Go to settings and start one!</h1>
+{% endif %}
 {% endblock %}

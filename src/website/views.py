@@ -14,6 +14,7 @@ def home():
             try:
                 transaction_value = int(request.form.get('transaction_value'))
                 transaction_desc = request.form.get('transaction_desc')
+                transaction_category = request.form.get('transaction_category')
                 transaction_outcome = request.form.get('transaction_outcome')
 
                 if transaction_outcome:
@@ -26,7 +27,8 @@ def home():
                     flash('Please insert transaction description', category='error')
                 else:
                     new_transaction = Transaction(value=transaction_value, description=transaction_desc,
-                                                  outcome=transaction_outcome, user_id=current_user.id)
+                                                  category=transaction_category, outcome=transaction_outcome,
+                                                  user_id=current_user.id)
                     db.session.add(new_transaction)
                     db.session.commit()
                     flash('Transaction added!', category='success')
@@ -44,51 +46,54 @@ def home():
 def settings():
     if request.method == 'POST':
 
-        category_name = request.form.get('category_name')
-        category_limit = request.form.get('category_limit')
-        period_name = request.form.get('period_name')
+        try:
+            category_name = request.form.get('category_name')
+            category_limit = int(request.form.get('category_limit'))
+            period_name = request.form.get('period_name')
 
-        if category_name:
-            if len(category_name) < 3:
-                flash('Category name should be at least 3 characters long', category='error')
-            else:
-                new_category = Category(name=category_name, limit=category_limit, user_id=current_user.id)
-                db.session.add(new_category)
-                db.session.commit()
-                flash('Category added!', category='success')
-
-        if period_name:
-            if len(current_user.categories) > 0:
-                if len(period_name) < 3:
-                    flash('Period name should be at least 3 characters', category='error')
+            if category_name:
+                if len(category_name) < 3:
+                    flash('Category name should be at least 3 characters long', category='error')
                 else:
-                    if db.session.query(History).filter(History.name == period_name).first():
-                        flash('Such period name was already used in the past!', category='error')
-                    else:
-                        new_period = Period(name=period_name, user_id=current_user.id)
-                        db.session.add(new_period)
-                        db.session.commit()
-                        flash('Period started!', category='success')
-            else:
-                flash('You need to have at least one transaction category created before starting new period!',
-                      category='error')
-
-        if all(v is None for v in [category_name, category_limit, period_name]):
-            if current_user.active_period:
-                try:
-                    new_history = History(name=current_user.active_period[0].name,
-                                          outcomes=current_user.get_total_transaction_value(False),
-                                          incomes=current_user.get_total_transaction_value(True),
-                                          user_id=current_user.id)
-                    db.session.add(new_history)
+                    new_category = Category(name=category_name, limit=category_limit, user_id=current_user.id)
+                    db.session.add(new_category)
                     db.session.commit()
-                    period = Period.query.get(current_user.active_period[0].id)
-                    if period and period.user_id == current_user.id:
-                        db.session.query(Transaction).delete()
-                        db.session.delete(period)
+                    flash('Category added!', category='success')
+
+            if period_name:
+                if len(current_user.categories) > 0:
+                    if len(period_name) < 3:
+                        flash('Period name should be at least 3 characters', category='error')
+                    else:
+                        if db.session.query(History).filter(History.name == period_name).first():
+                            flash('Such period name was already used in the past!', category='error')
+                        else:
+                            new_period = Period(name=period_name, user_id=current_user.id)
+                            db.session.add(new_period)
+                            db.session.commit()
+                            flash('Period started!', category='success')
+                else:
+                    flash('You need to have at least one transaction category created before starting new period!',
+                          category='error')
+
+            if all(field is None for field in [category_name, category_limit, period_name]):
+                if current_user.active_period:
+                    try:
+                        new_history = History(name=current_user.active_period[0].name,
+                                              outcomes=current_user.get_total_transaction_value(False),
+                                              incomes=current_user.get_total_transaction_value(True),
+                                              user_id=current_user.id)
+                        db.session.add(new_history)
                         db.session.commit()
-                except:
-                    db.session.rollback()
+                        period = Period.query.get(current_user.active_period[0].id)
+                        if period and period.user_id == current_user.id:
+                            db.session.query(Transaction).delete()
+                            db.session.delete(period)
+                            db.session.commit()
+                    except:
+                        db.session.rollback()
+        except ValueError:
+            flash('Category limit value should be a number!', category='error')
 
     return render_template("settings.html", user=current_user)
 

@@ -36,7 +36,7 @@ def client_logged_in_user(client):
 @pytest.fixture
 def client_with_transactions(client_logged_in_user):
     client_logged_in_user.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
-                                          'transaction_outcome': 'transaction_outcome'})
+                                          'transaction_category': '1', 'transaction_outcome': 'transaction_outcome'})
 
     yield client_logged_in_user
 
@@ -59,6 +59,6 @@ def client_with_period(client_with_categories):
 @pytest.fixture
 def client_with_period_and_transactions(client_with_period):
     client_with_period.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
-                                       'transaction_outcome': 'transaction_outcome'})
+                                       'transaction_category': '1', 'transaction_outcome': 'transaction_outcome'})
 
     yield client_with_period

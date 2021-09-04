@@ -11,16 +11,26 @@
       <tr>
         <td>{{ category.name }}</td>
         <td>{{ category.limit }}</td>
-        <td><button class="astext" onClick="deleteCategory({{ category.id }})">Delete</button></td>
+        <td>
+          <form action="{{ url_for('views.delete_category', category_id=category.id) }}" method="post">
+            <button type="submit" name="edit" class="aslink">Edit</button>
+          </form>
+          <form action="{{ url_for('views.delete_category', category_id=category.id) }}" method="post">
+            <button type="submit" name="clone" class="aslink bluelink">Clone</button>
+          </form>
+          <form action="{{ url_for('views.delete_category', category_id=category.id) }}" method="post">
+            <button type="submit" name="delete" class="aslink redlink">Delete</button>
+          </form>
+          </td>
       </tr>
     {% endfor %}
 </table>
 <h2 align="center">Categories</h2>
 <form method="POST">
   <div class="col">
-    <input class="btn" type="text" id="category_name" name="category_name" placeholder="Name" required>
+    <input class="btn" type="text" id="category_name" name="category_name" placeholder="Name">
     <br />
-    <input class="btn" type="text" id="category_limit" name="category_limit" placeholder="Limit" required>
+    <input class="btn" type="text" id="category_limit" name="category_limit" placeholder="Limit">
     <br />
     <input class="btn" type="submit" value="Add category">
   </div>

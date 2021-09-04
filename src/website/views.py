@@ -120,6 +120,49 @@ def settings():
     return render_template("settings.html", user=current_user)
 
 
+@views.route('/edit_transaction/<int:transaction_id>', methods=['POST'])
+@login_required
+def edit_transaction(transaction_id):
+    transaction = Transaction.query.get(transaction_id)
+    if request.method == 'POST':
+        transaction_value = request.form.get('transaction_value')
+        transaction_desc = request.form.get('transaction_desc')
+        transaction_category = request.form.get('transaction_category')
+        transaction_outcome = request.form.get('transaction_outcome')
+
+        if all(field is None for field in [transaction_value, transaction_desc, transaction_category,
+                                           transaction_outcome]):
+            return render_template("edit_transaction.html", user=current_user, transaction_value=transaction.value,
+                                   transaction_desc=transaction.description,
+                                   transaction_category=transaction.category,
+                                   transaction_outcome=transaction.outcome)
+
+        if transaction_category == '0':
+            flash('Category was not set!', category='error')
+        elif len(transaction_desc) < 1:
+            flash('Please insert transaction description', category='error')
+        else:
+            try:
+                if transaction_outcome:
+                    transaction.value = -abs(int(transaction_value))
+                    transaction.outcome = False
+                else:
+                    transaction.value = abs(int(transaction_value))
+                    transaction.outcome = True
+                transaction.description = transaction_desc
+                transaction.category = transaction_category
+                db.session.commit()
+                flash('Transaction was updated!')
+                return render_template("home.html", user=current_user)
+            except ValueError:
+                flash('Transaction value should be a number!', category='error')
+
+    return render_template("edit_transaction.html", user=current_user, transaction_value=transaction.value,
+                           transaction_desc=transaction.description,
+                           transaction_category=transaction.category,
+                           transaction_outcome=transaction.outcome)
+
+
 @views.route('/delete_transaction/<int:transaction_id>', methods=['POST'])
 @login_required
 def delete_transaction(transaction_id):
@@ -132,6 +175,33 @@ def delete_transaction(transaction_id):
         except:
             db.session.rollback()
     return render_template("home.html", user=current_user)
+
+
+@views.route('/edit_category/<int:category_id>', methods=['POST'])
+@login_required
+def edit_category(category_id):
+    category = Category.query.get(category_id)
+    category_name = request.form.get('category_name')
+    category_limit = request.form.get('category_limit')
+    if request.method == 'POST':
+        if not category_name and not category_limit:
+            return render_template("edit_category.html", user=current_user, category_name=category.name,
+                                   category_limit=category.limit)
+        if len(category_name) < 3:
+            flash('Category name should be at least 3 characters long', category='error')
+        elif category_limit == '':
+            flash('Category limit shall not be empty!', category='error')
+        else:
+            try:
+                category.limit = int(category_limit)
+                category.name = category_name
+                db.session.commit()
+                flash('Category was updated!')
+                return render_template("settings.html", user=current_user)
+            except ValueError:
+                flash('Category limit value should be a number!', category='error')
+        return render_template("edit_category.html", user=current_user, category_name=category.name,
+                               category_limit=category.limit)
 
 
 @views.route('/delete_category/<int:category_id>', methods=['POST'])

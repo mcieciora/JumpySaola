@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_transaction__no_period_home_page(client_logged_in_user):
     response = client_logged_in_user.get('/')
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'

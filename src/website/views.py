@@ -112,6 +112,7 @@ def settings():
                     if period and period.user_id == current_user.id:
                         db.session.query(Transaction).delete()
                         query_object_delete(period)
+                        flash('Period finished!', category='success')
                 except:
                     db.session.rollback()
     except ValueError:
@@ -172,6 +173,8 @@ def delete_transaction(transaction_id):
             if transaction and transaction.user_id == current_user.id:
                 query_object_delete(transaction)
                 flash('Transaction was deleted successfully!', category='success')
+            else:
+                flash('There is no such transaction ID!', category='error')
         except:
             db.session.rollback()
     return render_template("home.html", user=current_user)
@@ -213,6 +216,8 @@ def delete_category(category_id):
             if category and category.user_id == current_user.id:
                 query_object_delete(category)
                 flash('Category was deleted successfully!', category='success')
+            else:
+                flash('There is no such category ID!', category='error')
         except:
             db.session.rollback()
     return render_template("settings.html", user=current_user)

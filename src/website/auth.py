@@ -20,8 +20,7 @@ def login():
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
-            else:
-                flash('Incorrect pin code, try again.', category='error')
+            flash('Incorrect pin code, try again.', category='error')
         else:
             flash('Username does not exist.', category='error')
 

@@ -1,11 +1,3 @@
-def test_auth_signup__new_user(client):
-    response = client.post("/signup", data=dict(username="user1", pin_code_1="1234", pin_code_2="1234"),
-                           follow_redirects=True)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
-    assert '<strong>Success!</strong> Account created!' in response.data.decode(), \
-        f'New user sign up failed!\n{response.data}'
-
-
 def test_auth_signup__too_short_username(client):
     response = client.post("/signup", data=dict(username="aa", pin_code_1="1234", pin_code_2="1234"),
                            follow_redirects=True)
@@ -36,11 +28,3 @@ def test_auth_signup__not_matching_pin_codes(client):
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Warning!</strong> Passwords do not match.' in response.data.decode(), \
         f'Application shall not accept pin codes that do not match\n{response.data}'
-
-
-def test_auth_signup__existing_user(client_users_setup):
-    response = client_users_setup.post("/signup", data=dict(username="user1", pin_code_1="1234", pin_code_2="1234"),
-                                       follow_redirects=True)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
-    assert '<strong>Warning!</strong> User already exists.' in response.data.decode(), \
-        f'Application shall not accept creating two exactly the same accounts\n{response.data}'

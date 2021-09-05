@@ -7,7 +7,7 @@ pipeline {
         string(name: 'DOCKER_REGISTRY', defaultValue: "mcieciora/jumpy_saola", description: 'Provide Docker registry name')
         string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "", description: 'Provide dev-Docker registry name')
         string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
-        string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
+        string(name: 'PYTHON_VERSION', defaultValue: "python3.8", description: 'Provide Python version')
     }
    environment {
         registry = "$DOCKER_REGISTRY"
@@ -40,7 +40,7 @@ pipeline {
 
         stage('Lint code') {
             steps {
-                sh "$PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 main.py"
+                sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
             }
         }
 
@@ -71,8 +71,10 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script {
-                    docker.withRegistry('', registryCredential ) {
-                        dockerImage.push()
+                    if ($DOCKER_DEPLOY) {
+                        docker.withRegistry('', registryCredential ) {
+                            dockerImage.push()
+                        }
                     }
                 }
             }

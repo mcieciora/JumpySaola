@@ -1,3 +1,18 @@
+JumpySaola - release 1.1
+
+- Added categories for transactions
+- Added periods to track transactions in specific range of time
+- Added transactions' and categories' edit/remove functionalities
+- Added new application layout
+- Added README.md file
+- Extended Jenkinsfile
+- Added unit and functional tests
+- Image releasing is now fully automated
+- Removed index.js
+
+Associated docker tag: No image provided yet
+
+
 JumpySaola - release 1.0
 
 - Added Flask app initialization and database creation

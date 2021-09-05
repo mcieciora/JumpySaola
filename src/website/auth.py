@@ -20,8 +20,7 @@ def login():
                 flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
-            else:
-                flash('Incorrect pin code, try again.', category='error')
+            flash('Incorrect pin code, try again.', category='error')
         else:
             flash('Username does not exist.', category='error')
 
@@ -32,6 +31,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('Logged out!', category='success')
     return redirect(url_for('auth.login'))
 
 
@@ -48,9 +48,9 @@ def sign_up():
         elif len(username) < 3:
             flash('User name length must be greater than 3 characters.', category='error')
         elif pin_code_1 != pin_code_2:
-            flash(r'Passwords don\'t match.', category='error')
-        elif len(pin_code_1) < 4:
-            flash('Password must be at least 4 characters.', category='error')
+            flash(r'Passwords do not match.', category='error')
+        elif len(pin_code_1) != 4:
+            flash('Password must be exactly 4 characters long.', category='error')
         else:
             new_user = User(username=username, pin_code=generate_password_hash(pin_code_1, method='sha256'))
             db.session.add(new_user)

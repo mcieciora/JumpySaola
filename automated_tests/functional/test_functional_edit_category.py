@@ -50,7 +50,7 @@ def test_functional_edit_category__is_category(client_with_categories):
                                                                          category_limit=100), follow_redirects=True)
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Warning!</strong> Such category name already exists!' in response.data.decode(), \
-        f'Application shall not update name of category that already exists\n{response.data}'
+        f'Application shall not update name of category to one that already exists\n{response.data}'
 
 
 def test_functional_edit_category__is_transaction(client_with_transactions):

@@ -11,6 +11,8 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        if current_user.is_authenticated:
+            flash('You are already logged in!', category='error')
         username = request.form.get('username')
         pin_code = request.form.get('pin_code')
 
@@ -38,6 +40,8 @@ def logout():
 @auth.route('/signup', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+        if current_user.is_authenticated:
+            flash('You are already logged in!', category='error')
         username = request.form.get('username')
         pin_code_1 = request.form.get('pin_code_1')
         pin_code_2 = request.form.get('pin_code_2')

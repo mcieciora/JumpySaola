@@ -3,8 +3,8 @@
 <form method="POST">
       <h1>{{ user.active_period[0].name }}</h1>
       <div class="col">
-      <input class="btn" type="text" name="transaction_value" placeholder="Transaction value" required>
-      <input class="btn" type="text" name="transaction_desc" placeholder="Description" required>
+      <input class="btn" type="number" name="transaction_value" placeholder="Transaction value" required>
+      <input class="btn" type="text" minlength="3" name="transaction_desc" placeholder="Description" required>
           <select name="transaction_category" id="transaction_category">
               <option value="0">Categories</option>
               {% for category in user.categories %}
@@ -30,8 +30,8 @@
       </tr>
       {% for transaction in user.transactions %}
       <tr>
-          <td>{{ transaction.value }}</td>
           <td>{{ transaction.description }}</td>
+          <td>{{ transaction.value }}</td>
           <td>{{ transaction.category }}</td>
           <td>
               <form action="{{ url_for('views.edit_transaction', transaction_id=transaction.id) }}" method="post">
@@ -43,6 +43,12 @@
           </td>
       </tr>
       {% endfor %}
+      <tr>
+          <th>Summary</th>
+          <th>{{ user.get_total_transaction_value(False) + user.get_total_transaction_value(True)  }}</th>
+          <th></th>
+          <th></th>
+      </tr>
   </table>
 {% else %}
   <h1 align="center">No active period! Go to settings and start one!</h1>

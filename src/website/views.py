@@ -86,6 +86,10 @@ def settings():
                     flash('Category limit value should be a number!', category='error')
 
         if period_name:
+            period = db.session.query(Period).filter(Period.name == period_name).first()
+            if period:
+                flash('There is already an active period!', category='error')
+                return render_template("settings.html", user=current_user)
             if len(current_user.categories) > 0:
                 if len(period_name) < 3:
                     flash('Period name should be at least 3 characters', category='error')
@@ -115,10 +119,19 @@ def settings():
                         flash('Period finished!', category='success')
                 except:
                     db.session.rollback()
+            else:
+                flash('There is no active period!', category='error')
     except ValueError:
         flash('Category limit value should be a number!', category='error')
 
     return render_template("settings.html", user=current_user)
+
+
+@views.route('/history')
+@login_required
+def history():
+    # history_chart = current_user.get_month_statistics()
+    return render_template("history.html", user=current_user)
 
 
 @views.route('/edit_transaction/<int:transaction_id>', methods=['POST'])
@@ -126,6 +139,9 @@ def settings():
 def edit_transaction(transaction_id):
     transaction = Transaction.query.get(transaction_id)
     if request.method == 'POST':
+        if transaction is None:
+            flash('There is no such transaction ID!', category='error')
+            return render_template("home.html", user=current_user)
         transaction_value = request.form.get('transaction_value')
         transaction_desc = request.form.get('transaction_desc')
         transaction_category = request.form.get('transaction_category')
@@ -196,11 +212,16 @@ def edit_category(category_id):
             flash('Category limit shall not be empty!', category='error')
         else:
             try:
-                category.limit = int(category_limit)
-                category.name = category_name
-                db.session.commit()
-                flash('Category was updated!')
-                return render_template("settings.html", user=current_user)
+                if db.session.query(Category).filter(Category.name == category_name).first():
+                    flash('Such category name already exists!', category='error')
+                    return render_template("edit_category.html", user=current_user, category_name=category.name,
+                                           category_limit=category.limit)
+                else:
+                    category.limit = int(category_limit)
+                    category.name = category_name
+                    db.session.commit()
+                    flash('Category was updated!')
+                    return render_template("settings.html", user=current_user)
             except ValueError:
                 flash('Category limit value should be a number!', category='error')
         return render_template("edit_category.html", user=current_user, category_name=category.name,
@@ -221,3 +242,19 @@ def delete_category(category_id):
         except:
             db.session.rollback()
     return render_template("settings.html", user=current_user)
+
+
+@views.route('/delete_period/<int:period_id>', methods=['POST'])
+@login_required
+def delete_period(period_id):
+    if request.method == 'POST':
+        try:
+            period = History.query.get(period_id)
+            if period and period.user_id == current_user.id:
+                query_object_delete(period)
+                flash('Period was deleted successfully!', category='success')
+            else:
+                flash('There is no such period ID!', category='error')
+        except:
+            db.session.rollback()
+    return render_template("history.html", user=current_user)

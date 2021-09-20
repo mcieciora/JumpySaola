@@ -54,3 +54,18 @@ def client_with_transactions(client_with_period):
                                        'transaction_outcome': 'transaction_outcome'})
 
     yield client_with_period
+
+
+@pytest.fixture
+def client_without_history(client_with_transactions):
+    client_with_transactions.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
+                                             'transaction_category': 'category',
+                                             'transaction_outcome': None})
+    yield client_with_transactions
+
+
+@pytest.fixture
+def client_with_history(client_without_history):
+    client_without_history.post('/settings', data=dict(category_name=None, category_limit=None, period_name=None),
+                                follow_redirects=True)
+    yield client_without_history

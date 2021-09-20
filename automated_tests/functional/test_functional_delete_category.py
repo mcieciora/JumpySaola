@@ -1,15 +1,21 @@
-def test_functional_delete_category__unauthorised(client_with_categories):
+def test_functional_delete_category__unauthorised(client):
     """
         Covers: T-REQ33, T-REQ34
     """
-    response = client_with_categories.get('/logout', follow_redirects=True)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
-    assert 'Success!</strong> Logged out!' in response.data.decode(), \
-        f'Application shall log out user at request\n{response.data}'
-    response = client_with_categories.post('/delete_category/1', follow_redirects=True)
+    response = client.post('/delete_category/1', follow_redirects=True)
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Success!</strong> Please log in to access this page.' in response.data.decode(), \
         f'Application shall not allow unauthorised user to delete category\n{response.data}'
+
+
+def test_functional_delete_category__registered(client_with_categories):
+    """
+        Covers: T-REQ35, T-REQ36, T-REQ38, T-REQ40
+    """
+    response = client_with_categories.post('/delete_category/1', follow_redirects=True)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
+        f'Application shall delete category at user request\n{response.data}'
 
 
 def test_functional_delete_category__no_period(client_with_categories):

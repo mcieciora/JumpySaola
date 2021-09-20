@@ -9,6 +9,7 @@ class User(db.Model, UserMixin):
     active_period = db.relationship('Period')
     transactions = db.relationship('Transaction')
     categories = db.relationship('Category')
+    history = db.relationship('History')
 
     def get_categories(self):
         categories = {}
@@ -28,7 +29,8 @@ class User(db.Model, UserMixin):
         return total
 
     def get_total_transaction_value(self, income):
-        return sum([self.get_category_transactions_value(name, income) for name, values in self.get_categories().items()])
+        return sum([self.get_category_transactions_value(name, income) for name, values in
+                    self.get_categories().items()])
 
     def get_total_limit(self):
         return sum([values['limit'] for name, values in self.get_categories().items()])

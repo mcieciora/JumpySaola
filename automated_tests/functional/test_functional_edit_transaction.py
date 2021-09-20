@@ -49,7 +49,7 @@ def test_functional_edit_transaction__no_category(client_with_transactions):
         f'Application shall remove category chosen by user\n{response.data}'
     response = client_with_transactions.post('/edit_transaction/1', data=dict(transaction_value='25',
                                                                               transaction_desc='shopping',
-                                                                              transaction_category=None,
+                                                                              transaction_category='0',
                                                                               transaction_outcome=None),
                                              follow_redirects=True)
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
@@ -57,7 +57,7 @@ def test_functional_edit_transaction__no_category(client_with_transactions):
         f'Application shall not allow to edit transaction without category provided\n{response.data}'
     response = client_with_transactions.post('/edit_transaction/1',
                                              data=dict(transaction_value='25', transaction_desc='shopping',
-                                                       transaction_category=None,
+                                                       transaction_category='0',
                                                        transaction_outcome='transaction_outcome'),
                                              follow_redirects=True)
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'

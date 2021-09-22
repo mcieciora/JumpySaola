@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+from pygal import Pie, SolidGauge
 from . import db
 
 
@@ -34,6 +35,32 @@ class User(db.Model, UserMixin):
 
     def get_total_limit(self):
         return sum([values['limit'] for name, values in self.get_categories().items()])
+
+    def generate_default_plot(self):
+        return_list = []
+        if (total := self.get_total_limit()) > 0:
+            gauge = SolidGauge(inner_radius=0.50)
+            gauge.add('Total expanse with limit', [{'value': self.get_total_transaction_value(False) * -1,
+                                                    'max_value': total}],
+                      formatter=lambda x: '{:.10g} PLN'.format(x))
+            return_list.append(gauge.render_data_uri())
+            del gauge
+        if (total := self.get_total_transaction_value(True)) > 0:
+            gauge = SolidGauge(inner_radius=0.50)
+            gauge.add('Total outcome with income',
+                      [{'value': self.get_total_transaction_value(False) * -1, 'max_value': total}],
+                      formatter=lambda x: '{:.10g} PLN'.format(x))
+            return_list.append(gauge.render_data_uri())
+        return return_list
+
+    def plot_data(self, category):
+        category_data = self.get_categories()[category]
+        if category_data['value'] < 0:
+            category_data['value'] = category_data['value'] * -1
+        gauge = SolidGauge(inner_radius=0.50)
+        gauge.add(category, [{'value': category_data['value'], 'max_value': category_data['limit']}],
+                  formatter=lambda x: '{:.10g} PLN'.format(x))
+        return gauge.render_data_uri()
 
 
 class Transaction(db.Model):

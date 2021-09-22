@@ -50,6 +50,13 @@
           <th></th>
       </tr>
   </table>
+<input class="btn" type="submit" value="Overall">
+<input class="btn" type="submit" value="Categories">
+    {% for svg in svgs %}
+        <div id="chart">
+            <embed class="chart" type="image/svg+xml" src= {{ svg|safe }} />
+        </div>
+    {% endfor %}
 {% else %}
   <h1 align="center">No active period! Go to settings and start one!</h1>
 {% endif %}

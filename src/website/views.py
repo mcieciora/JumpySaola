@@ -16,11 +16,18 @@ def query_object_delete(query_element):
     db.session.commit()
 
 
+def get_svgs():
+    svgs = current_user.generate_default_plot()
+    for category in current_user.categories:
+        svgs.append(current_user.plot_data(category.name))
+    return svgs
+
+
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method != 'POST':
-        return render_template("home.html", user=current_user)
+        return render_template("home.html", user=current_user, svgs=get_svgs())
 
     if current_user.active_period:
         try:
@@ -31,7 +38,7 @@ def home():
 
             if transaction_category == '0':
                 flash('Category was not set!', category='error')
-                return render_template("home.html", user=current_user)
+                return render_template("home.html", user=current_user, svgs=get_svgs())
 
             if transaction_outcome:
                 transaction_value = -abs(transaction_value)
@@ -54,7 +61,7 @@ def home():
     else:
         flash('No period started!', category='error')
 
-    return render_template("home.html", user=current_user)
+    return render_template("home.html", user=current_user, svgs=get_svgs())
 
 
 @views.route('/settings', methods=['GET', 'POST'])

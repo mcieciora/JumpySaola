@@ -1,6 +1,13 @@
 from os import remove
 import pytest
 from src.website import create_app, create_database
+import logging
+
+
+@pytest.fixture
+def logger():
+    logging.basicConfig(level=logging.INFO)
+    return logging.getLogger()
 
 
 @pytest.fixture
@@ -36,6 +43,7 @@ def client_logged_in_user(client):
 @pytest.fixture
 def client_with_categories(client_logged_in_user):
     client_logged_in_user.post('/settings', data={'category_name': 'category', 'category_limit': '100'})
+    client_logged_in_user.post('/settings', data={'category_name': 'category_plus', 'category_limit': '150'})
 
     yield client_logged_in_user
 

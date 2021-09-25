@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Settings{% endblock %} {% block content
 %}
 <h1 align="center">Settings</h1>
+{% if user.categories|length > 0 %}
 <table id="categories_table">
 <tr>
   <th>Category</th>
@@ -27,6 +28,7 @@
     <th></th>
   </tr>
 </table>
+{% endif %}
 <h2 align="center">Categories</h2>
 <form method="POST">
   <div class="col">

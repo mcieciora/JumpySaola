@@ -21,6 +21,7 @@
           </div>
       </div>
   </form>
+  {% if user.transactions|length > 0 %}
   <table id="categories_table">
       <tr>
           <th>Value</th>
@@ -50,13 +51,13 @@
           <th></th>
       </tr>
   </table>
-<input class="btn" type="submit" value="Overall">
-<input class="btn" type="submit" value="Categories">
+
     {% for svg in svgs %}
         <div id="chart">
             <embed class="chart" type="image/svg+xml" src= {{ svg|safe }} />
         </div>
     {% endfor %}
+{% endif %}
 {% else %}
   <h1 align="center">No active period! Go to settings and start one!</h1>
 {% endif %}

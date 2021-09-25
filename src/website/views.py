@@ -16,18 +16,24 @@ def query_object_delete(query_element):
     db.session.commit()
 
 
-def get_svgs():
-    svgs = current_user.generate_default_plot()
+def get_overall_svg():
+    return [current_user.generate_all_outcomes_by_category(), current_user.generate_all_outcomes_with_limits(),
+            current_user.generate_incomes_outcomes_plot()]
+
+
+def get_categories_svg():
+    svgs = []
     for category in current_user.categories:
         svgs.append(current_user.plot_data(category.name))
     return svgs
 
 
 @views.route('/', methods=['GET', 'POST'])
+@views.route('/categories', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method != 'POST':
-        return render_template("home.html", user=current_user, svgs=get_svgs())
+        return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
     if current_user.active_period:
         try:
@@ -38,7 +44,7 @@ def home():
 
             if transaction_category == '0':
                 flash('Category was not set!', category='error')
-                return render_template("home.html", user=current_user, svgs=get_svgs())
+                return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
             if transaction_outcome:
                 transaction_value = -abs(transaction_value)
@@ -61,7 +67,10 @@ def home():
     else:
         flash('No period started!', category='error')
 
-    return render_template("home.html", user=current_user, svgs=get_svgs())
+    if request.path == '/categories':
+        return render_template("home.html", user=current_user, svgs=get_categories_svg())
+    else:
+        return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
 
 @views.route('/settings', methods=['GET', 'POST'])
@@ -137,8 +146,8 @@ def settings():
 @views.route('/history')
 @login_required
 def history():
-    # history_chart = current_user.get_month_statistics()
-    return render_template("history.html", user=current_user)
+    history_chart = current_user.get_month_statistics()
+    return render_template("history.html", user=current_user, svg=history_chart)
 
 
 @views.route('/edit_transaction/<int:transaction_id>', methods=['POST'])

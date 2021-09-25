@@ -21,6 +21,9 @@
         </tr>
       {% endfor %}
 </table>
+<div id="chart">
+    <embed class="chart" type="image/svg+xml" src= {{ svg|safe }} />
+</div>
 {% else %}
   <h1 align="center">There are no periods in history to show!</h1>
 {% endif %}

@@ -25,7 +25,7 @@ pipeline {
 
         stage('Clone GIT repository') {
             steps {
-                git branch: '$BRANCH', credentialsId: 'dockerhub_id', url: "$GIT_REPOSITORY"
+                git branch: '$BRANCH', url: "$GIT_REPOSITORY"
             }
         }
 

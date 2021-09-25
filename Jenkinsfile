@@ -5,20 +5,11 @@ pipeline {
         string(name: 'BRANCH', defaultValue: "master", description: 'Provide branch value')
         booleanParam(name: 'DOCKER_DEPLOY', defaultValue: true, description: 'Push built image to docker registry if true, else put it in development registry')
         string(name: 'DOCKER_REGISTRY', defaultValue: "mcieciora/jumpy_saola", description: 'Provide Docker registry name')
-        string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "", description: 'Provide dev-Docker registry name')
+        string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "localhost:5000/jumpy_saola", description: 'Provide dev-Docker registry name')
         string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
-        string(name: 'PYTHON_VERSION', defaultValue: "python3.8", description: 'Provide Python version')
+        string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
     }
-   environment {
-        registry = "$DOCKER_REGISTRY"
-        registryCredential = 'dockerhub_id'
-        dockerImage = ''
-    }
-    agent {
-    node {
-        label 'docker_build'
-    }
-}
+    agent any
     stages {
         stage('Reload configuration'){
             when {
@@ -46,22 +37,21 @@ pipeline {
 
         stage('Automated tests') {
             steps {
-                sh "pytest automated_tests/*"
-                sh "rm -rf automated_tests"
+                sh "pytest automated_tests/"
             }
         }
 
         stage('Build image') {
             steps {
                 script {
-                    dockerImage = docker.build registry + ":$BUILD_VERSION.$BUILD_NUMBER"
+                    sh "docker build -t jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER ."
                 }
             }
         }
 
         stage('Test image') {
             steps {
-                sh "docker run -d --name tested_image -p 5000:5000 $registry:$BUILD_VERSION.$BUILD_NUMBER"
+                sh "docker run -d --name tested_image -p 8000:8000 jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER"
                 sh "sleep 60"
                 sh "docker ps | grep 'tested_image'"
                 sh "docker stop tested_image"
@@ -72,9 +62,13 @@ pipeline {
             steps {
                 script {
                     if ($DOCKER_DEPLOY) {
-                        docker.withRegistry('', registryCredential ) {
-                            dockerImage.push()
-                        }
+                        sh "pwd"
+                    }
+                    else {
+                        sh "docker start registry"
+                        sh "docker image tag jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER $DEVELOPMENT_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
+                        sh "docker push $DEVELOPMENT_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
+                        sh "docker stop registry"
                     }
                 }
             }
@@ -83,6 +77,7 @@ pipeline {
         stage('Cleanup') {
             steps {
                 sh "docker system prune -a -f"
+                cleanWs()
             }
         }
     }

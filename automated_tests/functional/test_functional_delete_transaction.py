@@ -29,5 +29,3 @@ def test_functional_delete_transaction__no_transaction(logger, client_with_perio
     assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Warning!</strong> There is no such transaction ID!' in response.data.decode(), \
         f'Application shall not add transaction if action was requested by unauthorised user\n{response.data}'
-
-

@@ -77,3 +77,103 @@ def client_with_history(client_without_history):
     client_without_history.post('/settings', data=dict(category_name=None, category_limit=None, period_name=None),
                                 follow_redirects=True)
     yield client_without_history
+
+
+def sign_up(logger, this_client, data):
+    response = this_client.post("/signup", data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Account created!' in response.data.decode(), \
+        f'Application shall sign up user who provided proper credentials\n{response.data}'
+    return response
+
+
+def log_in(logger, this_client, data):
+    response = this_client.post('/login', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Logged in successfully!' in response.data.decode(), \
+        f'Application shall log in user who exists and provided correct pin code\n{response.data}'
+    return response
+
+
+def log_out(logger, this_client):
+    response = this_client.get('/logout', follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert 'Success!</strong> Logged out!' in response.data.decode(), \
+        f'Application shall logout user at request\n{response.data}'
+    return response
+
+
+def add_category(logger, this_client, data):
+    response = this_client.post('/settings', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Category added!' in response.data.decode(), \
+        f'Application shall accept category addition while no period is active\n{response.data}'
+    return response
+
+
+def edit_category(logger, this_client, data, category_id):
+    response = this_client.post(f'/edit_category/{category_id}', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Category was updated!' in response.data.decode(), \
+        f'Application shall update values of given category\n{response.data}'
+    return response
+
+
+def delete_category(logger, this_client, category_id):
+    response = this_client.post(f'/delete_category/{category_id}', follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
+        f'Application shall delete category at user request\n{response.data}'
+    return response
+
+
+def start_period(logger, this_client, data):
+    response = this_client.post('/settings', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Period started!' in response.data.decode(), \
+        f'Application shall start period with given name\n{response.data}'
+    return response
+
+
+def stop_period(logger, this_client):
+    response = this_client.post('/settings', data=dict(category_name=None, category_limit=None, period_name=None),
+                                follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Period finished!' in response.data.decode(), \
+        f'Application shall finish period at user request\n{response.data}'
+    return response
+
+
+def add_transaction(logger, this_client, data):
+    response = this_client.post('/', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Transaction added!' in response.data.decode(), \
+        f'Application shall add transaction that was passed with proper data\n{response.data}'
+    return response
+
+
+def edit_transaction(logger, this_client, data, transaction_id):
+    response = this_client.post(f'/edit_transaction/{transaction_id}', data=data, follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Transaction was updated!' in response.data.decode(), \
+        f'Application shall allow to edit transaction that was passed with proper data\n{response.data}'
+    return response
+
+
+def delete_transaction(logger, this_client, transaction_id):
+    response = this_client.post(f'/delete_transaction/{transaction_id}', follow_redirects=True)
+    logger.info(response.data)
+    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert '<strong>Success!</strong> Transaction was deleted successfully!' in response.data.decode(), \
+        f'Application shall delete transaction at user request\n{response.data}'
+    return response

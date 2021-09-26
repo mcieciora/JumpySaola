@@ -38,7 +38,8 @@ pipeline {
 
         stage('Automated tests') {
             steps {
-                sh "pytest automated_tests/"
+                sh "python3 -m pip install -r requirements.txt"
+                sh "python3 -m pytest automated_tests/"
             }
         }
 

@@ -37,14 +37,14 @@ pipeline {
 
         stage('Lint code') {
             steps {
-                // sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
+                sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
             }
         }
 
         stage('Automated tests') {
             steps {
                 sh "python3 -m pip install -r requirements.txt"
-                // sh "python3 -m pytest automated_tests/"
+                sh "python3 -m pytest automated_tests/"
             }
         }
 
@@ -69,7 +69,8 @@ pipeline {
             steps {
                 script {
                     if (params.DOCKER_DEPLOY) {
-                        sh "pwd"
+                        sh "docker image tag jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER $DOCKER_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
+                        sh "docker push $DOCKER_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
                     }
                     else {
                         sh "docker start registry"
@@ -84,7 +85,6 @@ pipeline {
     post {
         always {
             cleanWs()
-            sh "docker system prune -a -f"
         }
     }
 }

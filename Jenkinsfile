@@ -37,7 +37,6 @@ pipeline {
 
         stage('Lint code') {
             steps {
-                sh 'pwd'
                 // sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
             }
         }
@@ -45,7 +44,7 @@ pipeline {
         stage('Automated tests') {
             steps {
                 sh "python3 -m pip install -r requirements.txt"
-                sh "python3 -m pytest automated_tests/"
+                // sh "python3 -m pytest automated_tests/"
             }
         }
 
@@ -69,7 +68,7 @@ pipeline {
         stage('Deploy image') {
             steps {
                 script {
-                    if ($DOCKER_DEPLOY) {
+                    if (params.DOCKER_DEPLOY) {
                         sh "pwd"
                     }
                     else {

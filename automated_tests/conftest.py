@@ -1,6 +1,13 @@
 from os import remove
 import pytest
 from src.website import create_app, create_database
+import logging
+
+
+@pytest.fixture
+def logger():
+    logging.basicConfig(level=logging.INFO)
+    return logging.getLogger()
 
 
 @pytest.fixture
@@ -9,7 +16,7 @@ def app():
     with app.app_context():
         create_database(app)
     yield app
-    remove('../../src/website/db/database.db')
+    remove('src/website/db/database.db')
 
 
 @pytest.fixture
@@ -36,6 +43,7 @@ def client_logged_in_user(client):
 @pytest.fixture
 def client_with_categories(client_logged_in_user):
     client_logged_in_user.post('/settings', data={'category_name': 'category', 'category_limit': '100'})
+    client_logged_in_user.post('/settings', data={'category_name': 'category_plus', 'category_limit': '150'})
 
     yield client_logged_in_user
 
@@ -54,3 +62,18 @@ def client_with_transactions(client_with_period):
                                        'transaction_outcome': 'transaction_outcome'})
 
     yield client_with_period
+
+
+@pytest.fixture
+def client_without_history(client_with_transactions):
+    client_with_transactions.post('/', data={'transaction_value': '25', 'transaction_desc': 'shopping',
+                                             'transaction_category': 'category',
+                                             'transaction_outcome': None})
+    yield client_with_transactions
+
+
+@pytest.fixture
+def client_with_history(client_without_history):
+    client_without_history.post('/settings', data=dict(category_name=None, category_limit=None, period_name=None),
+                                follow_redirects=True)
+    yield client_without_history

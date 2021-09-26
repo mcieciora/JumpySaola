@@ -2,7 +2,7 @@
 <form method="POST">
       <h1>{{ user.active_period[0].name }}</h1>
       <div class="col">
-      <input class="btn" type="text" name="transaction_value" placeholder="Transaction value" value="{{ transaction_value }}">
+      <input class="btn" type="number" name="transaction_value" placeholder="Transaction value" value="{{ transaction_value }}">
       <input class="btn" type="text" name="transaction_desc" placeholder="Description" value="{{ transaction_desc }}">
           <select name="transaction_category" id="transaction_category">
               <option value="0">Categories</option>

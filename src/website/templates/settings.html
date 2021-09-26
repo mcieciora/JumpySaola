@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %}Settings{% endblock %} {% block content
 %}
 <h1 align="center">Settings</h1>
+{% if user.categories|length > 0 %}
 <table id="categories_table">
 <tr>
   <th>Category</th>
@@ -21,13 +22,19 @@
           </td>
       </tr>
     {% endfor %}
+  <tr>
+    <th>Summary</th>
+    <th>{{ user.get_total_limit() }}</th>
+    <th></th>
+  </tr>
 </table>
+{% endif %}
 <h2 align="center">Categories</h2>
 <form method="POST">
   <div class="col">
     <input class="btn" type="text" id="category_name" name="category_name" placeholder="Name">
     <br />
-    <input class="btn" type="text" id="category_limit" name="category_limit" placeholder="Limit">
+    <input class="btn" type="number" id="category_limit" name="category_limit" placeholder="Limit">
     <br />
     <input class="btn" type="submit" value="Add category">
   </div>

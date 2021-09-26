@@ -10,6 +10,7 @@
       <div class="topnav">
           <a href="/">Home</a>
           {% if user.is_authenticated %}
+            <a href="/history">History</a>
             <a href="/settings">Settings</a>
           {% endif %}
           <div class="topnav-right">

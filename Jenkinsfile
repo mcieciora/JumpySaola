@@ -2,7 +2,7 @@ pipeline {
     parameters {
         booleanParam(name: 'RELOAD_CONFIGURATION', defaultValue: false, description: '')
         string(name: 'BUILD_VERSION', defaultValue: "1.0", description: 'Provide to-build app version')
-        string(name: 'BRANCH', defaultValue: "*/master", description: 'Provide branch value')
+        string(name: 'BRANCH', defaultValue: "master", description: 'Provide branch value')
         booleanParam(name: 'DOCKER_DEPLOY', defaultValue: true, description: 'Push built image to docker registry if true, else put it in development registry')
         string(name: 'DOCKER_REGISTRY', defaultValue: "mcieciora/jumpy_saola", description: 'Provide Docker registry name')
         string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "localhost:5000/jumpy_saola", description: 'Provide dev-Docker registry name')
@@ -25,7 +25,12 @@ pipeline {
 
         stage('Clone GIT repository') {
             steps {
-                git branch: '$BRANCH', url: "$GIT_REPOSITORY"
+                sh 'git clone $GIT_REPOSITORY'
+                sh 'cd JumpySaola'
+                script {
+                    if ($BRANCH != "master") {
+                        sh 'git checkout $BRANCH'
+                    }
             }
         }
 

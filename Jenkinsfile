@@ -23,10 +23,8 @@ pipeline {
             }
         }
 
-        stage('Clone GIT repository') {
+        stage('Checkout branch') {
             steps {
-                sh 'git clone $GIT_REPOSITORY'
-                sh 'cd JumpySaola'
                 script {
                     if (params.BRANCH != "master") {
                         sh 'git checkout $BRANCH'

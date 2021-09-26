@@ -37,6 +37,7 @@ pipeline {
 
         stage('Lint code') {
             steps {
+                sh 'pwd'
                 sh '$PYTHON_VERSION -m pycodestyle --filename=*.py --max-line-length=120 .'
             }
         }
@@ -84,7 +85,7 @@ pipeline {
     }
     post {
         always {
-            cleanWs()
+            // cleanWs()
         }
     }
 }

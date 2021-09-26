@@ -31,7 +31,8 @@ pipeline {
 
         stage('Lint code') {
             steps {
-                sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
+                sh 'pwd'
+                // sh 'find . -type f -name "*.py" | xargs $PYTHON_VERSION -m pylint --disable=C0114,C0115,C0116 --max-line-length=120'
             }
         }
 

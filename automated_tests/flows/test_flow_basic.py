@@ -235,7 +235,7 @@ def test_flow_basic__f_req_4(logger, client_with_period):
 
 def test_flow_basic__f_req_5(logger, client_with_period):
     """
-        Covers: F-REQ4
+        Covers: F-REQ5
     """
     username = "user1"
     pin_code = "1234"

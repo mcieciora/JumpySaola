@@ -28,7 +28,7 @@ pipeline {
                 sh 'git clone $GIT_REPOSITORY'
                 sh 'cd JumpySaola'
                 script {
-                    if ($BRANCH != "master") {
+                    if (params.BRANCH != "master") {
                         sh 'git checkout $BRANCH'
                     }
                 }

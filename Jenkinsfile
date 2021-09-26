@@ -83,8 +83,7 @@ pipeline {
     }
     post {
         always {
-            echo ''
-            // cleanWs()
+            cleanWs()
         }
     }
 }

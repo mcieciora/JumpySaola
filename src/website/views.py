@@ -229,7 +229,8 @@ def edit_category(category_id):
             flash('Category limit shall not be empty!', category='error')
         else:
             try:
-                if db.session.query(Category).filter(Category.name == category_name).first():
+                if category.name != category_name and \
+                        db.session.query(Category).filter(Category.name == category_name).first():
                     flash('Such category name already exists!', category='error')
                     return render_template("edit_category.html", user=current_user, category_name=category.name,
                                            category_limit=category.limit)

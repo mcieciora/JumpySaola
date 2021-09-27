@@ -9,7 +9,6 @@ pipeline {
         string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
         string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
         booleanParam(name: 'VERBOSE', defaultValue: true, description: 'Print more logs during testing stage if true')
-        VERBOSE
     }
     agent any
     stages {

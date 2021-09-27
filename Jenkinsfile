@@ -8,6 +8,8 @@ pipeline {
         string(name: 'DEVELOPMENT_REGISTRY', defaultValue: "localhost:5000/jumpy_saola", description: 'Provide dev-Docker registry name')
         string(name: 'GIT_REPOSITORY', defaultValue: "https://github.com/mcieciora/JumpySaola.git", description: 'Provide Git repository https url')
         string(name: 'PYTHON_VERSION', defaultValue: "python3.9", description: 'Provide Python version')
+        booleanParam(name: 'VERBOSE', defaultValue: true, description: 'Print more logs during testing stage if true')
+        VERBOSE
     }
     agent any
     stages {
@@ -43,7 +45,15 @@ pipeline {
         stage('Automated tests') {
             steps {
                 sh "python3 -m pip install -r requirements.txt"
-                sh "python3 -m pytest automated_tests/ --log-cli-level=10"
+                script {
+                    if (params.VERBOSE) {
+                        sh "python3 -m pytest automated_tests/ --log-cli-level=10"
+                    }
+                    else {
+                        sh "python3 -m pytest automated_tests/"
+                    }
+                }
+
             }
         }
 
@@ -72,7 +82,7 @@ pipeline {
                         sh "docker push $DOCKER_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
                     }
                     else {
-                        sh "docker start registry"
+                        sh "docker run -d -p 5000:5000 --restart=always --name registry -v /mnt/registry:/var/lib/registry registry:2"
                         sh "docker image tag jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER $DEVELOPMENT_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
                         sh "docker push $DEVELOPMENT_REGISTRY:$BUILD_VERSION.$BUILD_NUMBER"
                         sh "docker stop registry"

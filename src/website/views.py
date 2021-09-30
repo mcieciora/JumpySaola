@@ -29,12 +29,15 @@ def get_categories_svg():
     return svgs
 
 
-@views.route('/', methods=['GET', 'POST'])
 @views.route('/categories', methods=['GET', 'POST'])
+@views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method != 'POST':
-        return render_template("home.html", user=current_user, svgs=get_overall_svg())
+        if request.path == '/categories':
+            return render_template("home.html", user=current_user, svgs=get_categories_svg())
+        else:
+            return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
     if current_user.active_period:
         try:
@@ -67,11 +70,7 @@ def home():
             flash('Transaction value should be a number!', category='error')
     else:
         flash('No period started!', category='error')
-
-    if request.path == '/categories':
-        return render_template("home.html", user=current_user, svgs=get_categories_svg())
-    else:
-        return render_template("home.html", user=current_user, svgs=get_overall_svg())
+    return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
 
 @views.route('/settings', methods=['GET', 'POST'])

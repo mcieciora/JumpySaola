@@ -22,7 +22,7 @@
       </div>
   </form>
   {% if user.transactions|length > 0 %}
-  <table id="transactions_table">
+  <table id="categories_table">
       <tr>
           <th>Value</th>
           <th>Description</th>
@@ -51,7 +51,10 @@
           <th></th>
       </tr>
   </table>
-
+    <div class="middlenav">
+        <a href="/">Overall</a>
+        <a href="/categories">Categories</a>
+    </div>
     {% for svg in svgs %}
         <div id="chart">
             <embed class="chart" type="image/svg+xml" src= {{ svg|safe }} />

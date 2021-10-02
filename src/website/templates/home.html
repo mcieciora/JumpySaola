@@ -51,7 +51,10 @@
           <th></th>
       </tr>
   </table>
-
+    <div class="middlenav">
+        <a href="/">Overall</a>
+        <a href="/categories">Categories</a>
+    </div>
     {% for svg in svgs %}
         <div id="chart">
             <embed class="chart" type="image/svg+xml" src= {{ svg|safe }} />

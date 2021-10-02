@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash
 from flask_login import login_required, current_user
+from sqlalchemy.exc import SQLAlchemyError
 from .models import Transaction, Category, Period, History
 from . import db
 
@@ -28,12 +29,15 @@ def get_categories_svg():
     return svgs
 
 
-@views.route('/', methods=['GET', 'POST'])
 @views.route('/categories', methods=['GET', 'POST'])
+@views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method != 'POST':
-        return render_template("home.html", user=current_user, svgs=get_overall_svg())
+        if request.path == '/categories':
+            return render_template("home.html", user=current_user, svgs=get_categories_svg())
+        else:
+            return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
     if current_user.active_period:
         try:
@@ -66,11 +70,7 @@ def home():
             flash('Transaction value should be a number!', category='error')
     else:
         flash('No period started!', category='error')
-
-    if request.path == '/categories':
-        return render_template("home.html", user=current_user, svgs=get_categories_svg())
-    else:
-        return render_template("home.html", user=current_user, svgs=get_overall_svg())
+    return render_template("home.html", user=current_user, svgs=get_overall_svg())
 
 
 @views.route('/settings', methods=['GET', 'POST'])
@@ -98,7 +98,7 @@ def settings():
                         new_category = Category(name=category_name, limit=category_limit, user_id=current_user.id)
                         query_object_add(new_category)
                         flash('Category added!', category='success')
-                except:
+                except SQLAlchemyError:
                     flash('Category limit value should be a number!', category='error')
 
         if period_name:
@@ -133,7 +133,7 @@ def settings():
                         db.session.query(Transaction).delete()
                         query_object_delete(period)
                         flash('Period finished!', category='success')
-                except:
+                except SQLAlchemyError:
                     db.session.rollback()
             else:
                 flash('There is no active period!', category='error')
@@ -207,7 +207,7 @@ def delete_transaction(transaction_id):
                 flash('Transaction was deleted successfully!', category='success')
             else:
                 flash('There is no such transaction ID!', category='error')
-        except:
+        except SQLAlchemyError:
             db.session.rollback()
     return render_template("home.html", user=current_user)
 
@@ -228,7 +228,8 @@ def edit_category(category_id):
             flash('Category limit shall not be empty!', category='error')
         else:
             try:
-                if db.session.query(Category).filter(Category.name == category_name).first():
+                if category.name != category_name and \
+                        db.session.query(Category).filter(Category.name == category_name).first():
                     flash('Such category name already exists!', category='error')
                     return render_template("edit_category.html", user=current_user, category_name=category.name,
                                            category_limit=category.limit)
@@ -255,7 +256,7 @@ def delete_category(category_id):
                 flash('Category was deleted successfully!', category='success')
             else:
                 flash('There is no such category ID!', category='error')
-        except:
+        except SQLAlchemyError:
             db.session.rollback()
     return render_template("settings.html", user=current_user)
 
@@ -271,6 +272,6 @@ def delete_period(period_id):
                 flash('Period was deleted successfully!', category='success')
             else:
                 flash('There is no such period ID!', category='error')
-        except:
+        except SQLAlchemyError:
             db.session.rollback()
     return render_template("history.html", user=current_user)

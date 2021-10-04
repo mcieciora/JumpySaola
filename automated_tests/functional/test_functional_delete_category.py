@@ -26,7 +26,7 @@ def test_functional_delete_category__no_period(logger, client_with_categories):
     """
     response = client_with_categories.post('/delete_category/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
         f'Application shall remove category chosen by user\n{response.data}'
 
@@ -37,7 +37,7 @@ def test_functional_delete_category__is_period(logger, client_with_period):
     """
     response = client_with_period.post('/delete_category/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
         f'Application shall remove category chosen by user\n{response.data}'
     assert '<td>25</td>' not in response.data.decode(), 'Table field is wrong or missing'
@@ -50,7 +50,7 @@ def test_functional_delete_category__no_category(logger, client_logged_in_user):
     """
     response = client_logged_in_user.post('/delete_category/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Warning!</strong> There is no such category ID!' in response.data.decode(), \
         f'Application shall inform user there is no such category to delete\n{response.data}'
 
@@ -61,6 +61,6 @@ def test_functional_delete_category__is_transaction(logger, client_with_transact
     """
     response = client_with_transactions.post('/delete_category/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
         f'Application shall accept category addition while period is active\n{response.data}'

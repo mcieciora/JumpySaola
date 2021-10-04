@@ -36,7 +36,7 @@
     <br />
     <input class="btn" type="number" id="category_limit" name="category_limit" placeholder="Limit">
     <br />
-    <input class="btn" type="submit" value="Add category">
+    <input id="add_category" class="btn" type="submit" value="Add category">
   </div>
 </form>
 <br />
@@ -45,11 +45,11 @@
   <div class="col">
     {% if user.active_period|length > 0 %}
       <h2 align="center">Actual period: {{ user.active_period[0].name }}</h2>
-      <input class="btn" type="submit" style="background-color: #ff0000" value="Stop period">
+      <input id="stop_period" class="btn" type="submit" style="background-color: #ff0000" value="Stop period">
     {% else %}
       <h2 align="center">No active period</h2>
       <input class="btn" type="text" id="period_name" name="period_name" placeholder="Period name" required>
-      <input class="btn" type="submit" value="Start period">
+      <input id="start_period" class="btn" type="submit" value="Start period">
       {% endif %}
   </div>
 </form>

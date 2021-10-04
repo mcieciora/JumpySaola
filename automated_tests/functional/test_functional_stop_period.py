@@ -37,7 +37,7 @@ def test_functional_stop_period__no_category(logger, client_with_period):
     """
     response = client_with_period.post('/delete_category/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Success!</strong> Category was deleted successfully!' in response.data.decode(), \
         f'Application shall remove category chosen by user\n{response.data}'
     assert '<td>25</td>' not in response.data.decode(), 'Table field is wrong or missing'

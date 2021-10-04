@@ -26,6 +26,6 @@ def test_functional_delete_history__no_history(logger, client_without_history):
     """
     response = client_without_history.post('/delete_period/1')
     logger.info(response.data)
-    assert response.status_code == 200, f'Expected response status code: 200, actual: {response.status_code}'
+    assert response.status_code == 302, f'Expected response status code: 200, actual: {response.status_code}'
     assert '<strong>Warning!</strong> There is no such period ID!' in response.data.decode(), \
         f'Application shall inform user there is no such period to delete\n{response.data}'

@@ -15,7 +15,7 @@
             <td>{{ period.incomes }}</td>
             <td>
                 <form action="{{ url_for('views.delete_period', period_id=period.id) }}" method="post">
-                    <button type="submit" name="delete" class="aslink redlink">Delete</button>
+                    <button id="delete" type="submit" name="delete" class="aslink redlink">Delete</button>
                 </form>
             </td>
         </tr>

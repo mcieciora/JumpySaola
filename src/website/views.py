@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, url_for, redirect
 from flask_login import login_required, current_user
 from sqlalchemy.exc import SQLAlchemyError
 from .models import Transaction, Category, Period, History
@@ -186,7 +186,7 @@ def edit_transaction(transaction_id):
                 transaction.category = transaction_category
                 db.session.commit()
                 flash('Transaction was updated!')
-                return render_template("home.html", user=current_user)
+                return redirect(url_for('views.home'))
             except ValueError:
                 flash('Transaction value should be a number!', category='error')
 
@@ -209,7 +209,7 @@ def delete_transaction(transaction_id):
                 flash('There is no such transaction ID!', category='error')
         except SQLAlchemyError:
             db.session.rollback()
-    return render_template("home.html", user=current_user)
+    return redirect(url_for('views.home'))
 
 
 @views.route('/edit_category/<int:category_id>', methods=['POST'])
@@ -238,7 +238,7 @@ def edit_category(category_id):
                     category.name = category_name
                     db.session.commit()
                     flash('Category was updated!')
-                    return render_template("settings.html", user=current_user)
+                    return redirect(url_for('views.settings'))
             except ValueError:
                 flash('Category limit value should be a number!', category='error')
         return render_template("edit_category.html", user=current_user, category_name=category.name,
@@ -258,7 +258,7 @@ def delete_category(category_id):
                 flash('There is no such category ID!', category='error')
         except SQLAlchemyError:
             db.session.rollback()
-    return render_template("settings.html", user=current_user)
+    return redirect(url_for('views.settings'))
 
 
 @views.route('/delete_period/<int:period_id>', methods=['POST'])
@@ -274,4 +274,4 @@ def delete_period(period_id):
                 flash('There is no such period ID!', category='error')
         except SQLAlchemyError:
             db.session.rollback()
-    return render_template("history.html", user=current_user)
+    return redirect(url_for('views.history'))

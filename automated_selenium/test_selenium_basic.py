@@ -22,6 +22,7 @@ def test_selenium_basic__sign_up_with_wrong_data(firefox_driver):
     firefox_driver.find_element_by_name('pin_code_2').send_keys('1233')
     firefox_driver.find_element_by_id('submit').click()
     assert 'Passwords do not match.' in firefox_driver.page_source
+    assert 'Success!' not in firefox_driver.page_source
 
 
 def test_selenium_basic__sign_up_user_and_log_out(firefox_driver):
@@ -36,6 +37,7 @@ def test_selenium_basic__sign_up_user_and_log_out(firefox_driver):
     firefox_driver.find_element_by_link_text('Logout').click()
     assert '/login' in firefox_driver.current_url
     assert 'Login' == firefox_driver.title
+    assert 'Warning!' not in firefox_driver.page_source
     expected_content = ['<a href="/login">Login</a>', '<a href="/signup">Sign Up</a>', 'placeholder="Enter username"',
                         'placeholder="Enter pin code"']
     for content in expected_content:
@@ -55,6 +57,7 @@ def test_selenium_basic__login_with_wrong_data(firefox_driver):
     assert 'Incorrect pin code, try again.' in firefox_driver.page_source
     assert '/login' in firefox_driver.current_url
     assert 'Login' == firefox_driver.title
+    assert 'Success!' not in firefox_driver.page_source
 
 
 def test_selenium_basic__login_user(firefox_driver):
@@ -64,6 +67,7 @@ def test_selenium_basic__login_user(firefox_driver):
     assert 'Home' == firefox_driver.title
     assert 'Logged in successfully!' in firefox_driver.page_source
     assert 'No active period! Go to settings and start one!' in firefox_driver.page_source
+    assert 'Warning!' not in firefox_driver.page_source
 
 
 def test_selenium_basic__change_to_settings_tab(firefox_driver_logged_in):
@@ -82,18 +86,21 @@ def test_selenium_basic__start_period_before_adding_categories(firefox_driver_lo
     firefox_driver_logged_in.find_element_by_id('start_period').click()
     assert 'You need to have at least one transaction category created before starting new period!' in \
            firefox_driver_logged_in.page_source
+    assert 'Success!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__add_category_with_wrong_data(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_link_text('Settings').click()
-    firefox_driver_logged_in.find_element_by_name('category_name').send_keys('')
-    firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('100')
-    firefox_driver_logged_in.find_element_by_id('add_category').click()
-    assert 'Category name should be at least 3 characters long' in firefox_driver_logged_in.page_source
     firefox_driver_logged_in.find_element_by_name('category_name').send_keys('category')
     firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('')
     firefox_driver_logged_in.find_element_by_id('add_category').click()
     assert 'Category limit shall not be empty!' in firefox_driver_logged_in.page_source
+    assert 'Success!' not in firefox_driver_logged_in.page_source
+    # firefox_driver_logged_in.find_element_by_name('category_name').send_keys('')
+    # firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('100')
+    # firefox_driver_logged_in.find_element_by_id('add_category').click()
+    # assert 'Category name should be at least 3 characters long' in firefox_driver_logged_in.page_source
+    # assert 'Success!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__add_category(firefox_driver_logged_in):
@@ -102,6 +109,7 @@ def test_selenium_basic__add_category(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('100')
     firefox_driver_logged_in.find_element_by_id('add_category').click()
     assert 'Category added!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     expected_content = ['<h2 align="center">No active period</h2>', 'placeholder="Name"', 'placeholder="Limit"',
                         'placeholder="Period name"', '<h2 align="center">Categories</h2>', '<th>Category</th>',
                         '<th>Limit</th>', '<th>Options</th>', '<td>category</td>', '<td>100</td>',
@@ -118,6 +126,7 @@ def test_selenium_basic__add_same_category_again(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('100')
     firefox_driver_logged_in.find_element_by_id('add_category').click()
     assert 'Such category name already exists!' in firefox_driver_logged_in.page_source
+    assert 'Success!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__change_to_edit_category_tab(firefox_driver_logged_in):
@@ -140,6 +149,7 @@ def test_selenium_basic__edit_category_with_wrong_data(firefox_driver_logged_in)
     firefox_driver_logged_in.find_element_by_name('category_limit').send_keys('100')
     firefox_driver_logged_in.find_element_by_id('submit').click()
     assert 'Category name should be at least 3 characters long' in firefox_driver_logged_in.page_source
+    assert 'Success!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__edit_category(firefox_driver_logged_in):
@@ -155,6 +165,7 @@ def test_selenium_basic__edit_category(firefox_driver_logged_in):
     assert 'Category was updated!' in firefox_driver_logged_in.page_source
     assert 'category' in firefox_driver_logged_in.page_source
     assert '150' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     firefox_driver_logged_in.find_element_by_name('edit').click()
     firefox_driver_logged_in.find_element_by_name('category_name').clear()
     firefox_driver_logged_in.find_element_by_name('category_name').send_keys('new_category')
@@ -164,6 +175,7 @@ def test_selenium_basic__edit_category(firefox_driver_logged_in):
     assert '/settings' in firefox_driver_logged_in.current_url
     assert 'Settings' == firefox_driver_logged_in.title
     assert 'Category was updated!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'new_category' in firefox_driver_logged_in.page_source
     assert '200' in firefox_driver_logged_in.page_source
 
@@ -171,6 +183,7 @@ def test_selenium_basic__edit_category(firefox_driver_logged_in):
 def test_selenium_basic__delete_category(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_link_text('Settings').click()
     firefox_driver_logged_in.find_element_by_name('delete').click()
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'Category was deleted successfully!' in firefox_driver_logged_in.page_source
     assert '/settings' in firefox_driver_logged_in.current_url
     assert 'Settings' == firefox_driver_logged_in.title
@@ -191,6 +204,7 @@ def test_selenium_basic__add_more_categories(firefox_driver_logged_in):
         firefox_driver_logged_in.find_element_by_name('category_limit').send_keys(v)
         firefox_driver_logged_in.find_element_by_id('add_category').click()
         assert 'Category added!' in firefox_driver_logged_in.page_source
+        assert 'Warning!' not in firefox_driver_logged_in.page_source
         assert k in firefox_driver_logged_in.page_source
     assert '<th>850</th>' in firefox_driver_logged_in.page_source
 
@@ -200,6 +214,7 @@ def test_selenium_basic__start_period(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_name('period_name').send_keys('new_period')
     firefox_driver_logged_in.find_element_by_id('start_period').click()
     assert 'Period started!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'Actual period: new_period' in firefox_driver_logged_in.page_source
     assert '<input id="stop_period" class="btn" type="submit" style="background-color: #ff0000" value="Stop period">' \
            in firefox_driver_logged_in.page_source
@@ -223,6 +238,7 @@ def test_selenium_basic__add_transaction(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_id('add_transaction').click()
     assert 'Home' == firefox_driver_logged_in.title
     assert 'Transaction added!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     expected_content = ['<th>Value</th>', '<th>Description</th>', '<th>Category</th>', '<th>Options</th>',
                         '<td>transaction_1</td>', '<td>-25</td>', '<td>cat_3</td>',
                         '<button type="submit" name="edit" class="aslink">Edit</button>',
@@ -244,6 +260,7 @@ def test_selenium_basic__edit_transaction_with_wrong_data(firefox_driver_logged_
     firefox_driver_logged_in.find_element_by_id('submit').click()
     assert 'Home' == firefox_driver_logged_in.title
     assert 'Transaction value should be a number!'
+    assert 'Success!' not in firefox_driver_logged_in.page_source
     firefox_driver_logged_in.find_element_by_name('transaction_value').clear()
     firefox_driver_logged_in.find_element_by_name('transaction_value').send_keys('100')
     firefox_driver_logged_in.find_element_by_name('transaction_desc').clear()
@@ -253,6 +270,7 @@ def test_selenium_basic__edit_transaction_with_wrong_data(firefox_driver_logged_
     firefox_driver_logged_in.find_element_by_id('submit').click()
     assert 'Home' == firefox_driver_logged_in.title
     assert 'Please insert transaction description' in firefox_driver_logged_in.page_source
+    assert 'Success!' not in firefox_driver_logged_in.page_source
     firefox_driver_logged_in.find_element_by_name('transaction_value').clear()
     firefox_driver_logged_in.find_element_by_name('transaction_value').send_keys('100')
     firefox_driver_logged_in.find_element_by_name('transaction_desc').clear()
@@ -262,6 +280,7 @@ def test_selenium_basic__edit_transaction_with_wrong_data(firefox_driver_logged_
     firefox_driver_logged_in.find_element_by_id('submit').click()
     assert 'Home' == firefox_driver_logged_in.title
     assert 'Category was not set!'
+    assert 'Success!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__edit_transaction(firefox_driver_logged_in):
@@ -274,6 +293,7 @@ def test_selenium_basic__edit_transaction(firefox_driver_logged_in):
     select.select_by_visible_text('cat_2')
     firefox_driver_logged_in.find_element_by_id('submit').click()
     assert 'Transaction was updated!'
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'Home' == firefox_driver_logged_in.title
     expected_content = ['<th>Value</th>', '<th>Description</th>', '<th>Category</th>', '<th>Options</th>',
                         '<td>desc</td>', '<td>-100</td>', '<td>cat_2</td>',
@@ -298,6 +318,7 @@ def test_selenium_basic__home_page_categories_charts(firefox_driver_logged_in):
 def test_selenium_basic__delete_transaction(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_name('delete').click()
     assert 'Transaction was updated!'
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'Home' == firefox_driver_logged_in.title
     not_expected_content = ['<th>Value</th>', '<th>Description</th>', '<th>Category</th>', '<th>Options</th>',
                             '<td>desc</td>', '<td>-100</td>', '<td>cat_2</td>',
@@ -318,6 +339,7 @@ def test_selenium_basic__stop_period(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_link_text('Settings').click()
     firefox_driver_logged_in.find_element_by_id('stop_period').click()
     assert 'Period finished!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
 
 
 def test_selenium_basic__history_page_history_chart_after_period_stop(firefox_driver_logged_in):
@@ -329,4 +351,5 @@ def test_selenium_basic__delete_period(firefox_driver_logged_in):
     firefox_driver_logged_in.find_element_by_link_text('History').click()
     firefox_driver_logged_in.find_element_by_name('delete').click()
     assert 'Period was deleted successfully!' in firefox_driver_logged_in.page_source
+    assert 'Warning!' not in firefox_driver_logged_in.page_source
     assert 'There are no periods in history to show!' in firefox_driver_logged_in.page_source

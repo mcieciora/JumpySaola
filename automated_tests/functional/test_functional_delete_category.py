@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_functional_delete_category__unauthorised(logger, client):
     """
         Covers: T-REQ33, T-REQ34
@@ -20,6 +23,7 @@ def test_functional_delete_category__registered(logger, client_with_categories):
         f'Application shall delete category at user request\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_delete_category__no_period(logger, client_with_categories):
     """
         Covers: T-REQ35, T-REQ36, T-REQ38, T-REQ39, T-REQ41
@@ -31,6 +35,7 @@ def test_functional_delete_category__no_period(logger, client_with_categories):
         f'Application shall remove category chosen by user\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_delete_category__is_period(logger, client_with_period):
     """
         Covers: T-REQ35, T-REQ36, T-REQ38, T-REQ40, T-REQ41
@@ -44,6 +49,7 @@ def test_functional_delete_category__is_period(logger, client_with_period):
     assert '<td>shopping</td>' not in response.data.decode(), 'Table field is wrong or missing'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_delete_category__no_category(logger, client_logged_in_user):
     """
         Covers: T-REQ35, T-REQ36, T-REQ37, T-REQ39, T-REQ41
@@ -55,6 +61,7 @@ def test_functional_delete_category__no_category(logger, client_logged_in_user):
         f'Application shall inform user there is no such category to delete\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_delete_category__is_transaction(logger, client_with_transactions):
     """
         Covers: T-REQ35, T-REQ36, T-REQ38, T-REQ40, T-REQ42

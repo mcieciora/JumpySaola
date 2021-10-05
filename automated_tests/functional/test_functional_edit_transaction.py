@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_functional_edit_transaction__unauthorised(logger, client):
     """
         Covers: T-REQ91, T-REQ92, T-REQ100, T-REQ101
@@ -43,6 +46,7 @@ def test_functional_edit_transaction__registered(logger, client_with_transaction
         f'Application shall allow to edit transaction that was passed with proper data\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_edit_transaction__no_category(logger, client_with_transactions):
     """
         Covers: T-REQ93, T-REQ94, T-REQ95, T-REQ97, T-REQ99, T-REQ102, T-REQ103, T-REQ104, T-REQ106, T-REQ108

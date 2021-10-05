@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_functional_stop_period__unauthorised(logger, client):
     """
         Covers: T-REQ53, T-REQ54
@@ -31,6 +34,7 @@ def test_functional_stop_period__registered(logger, client_with_period):
         f'Application shall inform on main page that there is no active period\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_stop_period__no_category(logger, client_with_period):
     """
         Covers: T-REQ55, T-REQ56, T-REQ57, T-REQ60, T-REQ61, T-REQ114

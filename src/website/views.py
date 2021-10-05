@@ -100,8 +100,6 @@ def settings():
                         flash('Category added!', category='success')
                 except SQLAlchemyError:
                     flash('Category limit value should be a number!', category='error')
-        else:
-            flash('Category name should be at least 3 characters long', category='error')
 
         if period_name:
             period = db.session.query(Period).filter(Period.name == period_name).first()
@@ -121,8 +119,6 @@ def settings():
             else:
                 flash('You need to have at least one transaction category created before starting new period!',
                       category='error')
-        else:
-            flash('Period name should be at least 3 characters', category='error')
 
         if all(field is None for field in [category_name, category_limit, period_name]):
             if current_user.active_period:

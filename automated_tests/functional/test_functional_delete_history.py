@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_functional_delete_history__unauthorised(logger, client):
     """
         Covers: T-REQ109, T-REQ110
@@ -20,6 +23,7 @@ def test_functional_delete_category__registered(logger, client_with_history):
         f'Application shall delete category at user request\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_delete_history__no_history(logger, client_without_history):
     """
         Covers: T-REQ111, T-REQ112, T-REQ115

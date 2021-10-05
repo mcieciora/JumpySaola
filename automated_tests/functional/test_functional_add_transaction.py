@@ -1,3 +1,6 @@
+import pytest
+
+
 def test_functional_add_transaction__unauthorised(logger, client):
     """
         Covers: T-REQ63, T-REQ64, T-REQ73, T-REQ74
@@ -18,6 +21,7 @@ def test_functional_add_transaction__unauthorised(logger, client):
         f'Application shall not add transaction if action was requested by unauthorised user\n{response.data}'
 
 
+@pytest.mark.skip('Those REQs are covered by selenium tests')
 def test_functional_add_transaction__registered(logger, client_with_period):
     """
         Covers: T-REQ65, T-REQ66, T-REQ68, T-REQ70, T-REQ71, T-REQ75, T-REQ76, T-REQ78, T-REQ80, T-REQ81

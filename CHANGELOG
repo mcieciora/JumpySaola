@@ -15,7 +15,7 @@ JumpySaola - release 1.2
 - Use of light weight docker image for building application was postponed for next release
 - Implementation of redirect and flows tests was terminated during release process
 
-Associated docker tag: Coming soon
+Associated docker tag: mcieciora/jumpy_saola:1.2.102
 
 
 JumpySaola - release 1.1
@@ -30,7 +30,7 @@ JumpySaola - release 1.1
 - Image releasing is now fully automated
 - Removed index.js
 
-Associated docker tag: No image for this tag
+Associated docker tag: mcieciora/jumpy_saola:1.1.63
 
 
 JumpySaola - release 1.0

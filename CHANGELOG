@@ -1,3 +1,23 @@
+JumpySaola - release 1.2
+
+- Added transactions and categories summary
+- Added history tab
+- Added chart generation for each available category
+- Added chart generation for all categories in outcomes (pie view)
+- Added chart generation for outcomes with limits view
+- Added chart generation for outcomes with incomes
+- Added chart generation for all history records
+- Added possibility to run release job from specific branch
+- Added possibility to deploy docker image to local docker registry
+- Unit tests were cleaned up and extended
+- Added basic selenium tests to cover requirements from functional tests
+- Bug fixes
+- Use of light weight docker image for building application was postponed for next release
+- Implementation of redirect and flows tests was terminated during release process
+
+Associated docker tag: Coming soon
+
+
 JumpySaola - release 1.1
 
 - Added categories for transactions
@@ -10,7 +30,7 @@ JumpySaola - release 1.1
 - Image releasing is now fully automated
 - Removed index.js
 
-Associated docker tag: No image provided yet
+Associated docker tag: No image for this tag
 
 
 JumpySaola - release 1.0

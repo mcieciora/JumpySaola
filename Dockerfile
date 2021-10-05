@@ -10,6 +10,6 @@ RUN pip install -r requirements.txt
 
 COPY . /app
 
-ENTRYPOINT [ "python3.8" ]
+ENTRYPOINT [ "python3.9" ]
 
 CMD [ "main.py" ]

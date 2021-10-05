@@ -161,6 +161,29 @@ option {
     color: blue;
     }
 
+.middlenav {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 2.5%;
+    text-align: center
+}
+
+.middlenav a:link, .middlenav a:visited {
+  background-color: white;
+  color: black;
+  border-style: solid;
+  border-color: #4eb151;
+  border-width: 1px;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.middlenav a:hover, a:active {
+  background-color: #4eb151;
+  color: white;
+  text-align: center;
+}
 
 .url_button {
   width: 30%;
@@ -206,8 +229,8 @@ option {
   margin-left: auto;
   margin-right: auto;
   margin-top: 2.5%;
-  width: 75%;
-  height: 75%;
+  width: 45%;
+  height: 45%;
 }
 
 #categories_table {

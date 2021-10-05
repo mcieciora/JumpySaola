@@ -2,21 +2,9 @@
 <form method="POST">
   <div class="col">
   <h2 align="center">Login</h2>
-    <input
-      type="text"
-      class="btn"
-      id="username"
-      name="username"
-      placeholder="Enter username"
-    />
-    <input
-      type="password"
-      class="btn"
-      id="pin_code"
-      name="pin_code"
-      placeholder="Enter pin code"
-    />
-    <input class="btn" type="submit" value="Login">
+    <input type="text" class="btn" minlength="3" id="username" name="username" placeholder="Enter username"/>
+    <input type="password" minlength="4" maxlength="4" class="btn" id="pin_code" name="pin_code" placeholder="Enter pin code" />
+    <input id="login" class="btn" type="submit" value="Login">
     </div>
 </form>
 {% endblock %}

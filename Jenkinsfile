@@ -42,13 +42,13 @@ pipeline {
 
         stage('Automated tests') {
             steps {
-                sh "python3 -m pip install -r requirements.txt"
+                sh '$PYTHON_VERSION -m pip install -r requirements.txt'
                 script {
                     if (params.VERBOSE) {
-                        sh "python3 -m pytest automated_tests/ --log-cli-level=10"
+                        sh '$PYTHON_VERSION -m pytest automated_tests/ --log-cli-level=10'
                     }
                     else {
-                        sh "python3 -m pytest automated_tests/"
+                        sh '$PYTHON_VERSION -m pytest automated_tests/'
                     }
                 }
 

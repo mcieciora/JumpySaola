@@ -16,7 +16,7 @@ def app():
     with app.app_context():
         create_database(app)
     yield app
-    remove('../src/website/db/database.db')
+    remove('src/website/db/database.db')
 
 
 @pytest.fixture

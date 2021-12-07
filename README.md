@@ -9,7 +9,7 @@ Saola <i>(Pseudoryx nghetinhensis)</i> is one of the world's rarest large mammal
 <i>source:</i> [Saola - Wikipedia](https://en.wikipedia.org/wiki/Saola)
 
 <h3>Known issues</h3>
-- URL in browser is sometimes not reloaded after editing costs or categories, so that is a bit confusing for app later
+- URL in browser is sometimes not reloaded after editing costs or categories, so that is a bit confusing for app later 
 - Tooltip over outcome checkbox has got wrong size
 
 <h3>Discontinuation note</h3>

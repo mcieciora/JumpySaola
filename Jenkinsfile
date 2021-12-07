@@ -65,9 +65,8 @@ pipeline {
 
         stage('Test image') {
             steps {
-                sh "docker run -d --name tested_image -p 8000:8000 jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER"
-                sh "docker build -t selenium_tests:latest automated_selenium/Dockerfile"
-                sh "docker run -d --name tested_image selenium_tests:latest"
+                sh "docker run -d -p 8000:8000 --name tested_image jumpy_saola:$BUILD_VERSION.$BUILD_NUMBER"
+                sh '$PYTHON_VERSION -m pytest automated_selenium/'
                 sh "docker stop tested_image"
             }
         }

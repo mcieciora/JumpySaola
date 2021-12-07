@@ -29,21 +29,25 @@ docker run -d -p 8000:8000 --name jumpy_saola mcieciora/jumpy_saola:1.2.102
   
 First, you need to create account with username and <b>four digits length pin code</b>. After that you will be automatically redirected to main page.
 
+
 ![sign_up.png](doc/sign_up.PNG)\
 
 <h3>Add categories and start period</h3>  
 
 Go to <i>Settings</i> and create few transaction categories like Food, Rent, Shopping etc. Those categories will be available for you while adding transaction, so plan them a wisely, so that will be easier for you to manage budget ;)
 
+
 ![categories.png](doc/categories.PNG)\
 
 Later you can start first period of transactions. How long will it take? It is up to you. You can always go back and click <i>Stop period</i> to finish it.
+
 
 ![new_period.png](doc/new_period.PNG)\
   
 <h3>Add transaction</h3>  
   
 Now you can move back to main page and add all incomes and outcomes that you have made recently or wait until first expanse will be made during active period :)
+
 
 ![transaction.png](doc/transaction.PNG)\
 
@@ -52,9 +56,11 @@ Now you can move back to main page and add all incomes and outcomes that you hav
 Charts are generated on main page in two different groups. 
 First one shows general charts such as all outcomes with limit or all categories expanses with remaining limit.
 
+
 ![charts_all_outcomes.png](doc/charts_all_outcomes.PNG)\
 
 Second group is focused on categories by themselves, so all charts are generated to show total expanses in category with category preset limit.
+
 
 ![charts_categories.png](doc/charts_categories.PNG)\
 
